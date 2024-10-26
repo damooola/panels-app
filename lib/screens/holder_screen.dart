@@ -11,46 +11,64 @@ class HolderScreen extends StatefulWidget {
 }
 
 class _HolderScreenState extends State<HolderScreen> {
-  List<Widget> screens = [];
-  int screenIndex = 0;
+  List<Widget> _screens = [];
+  int _screenIndex = 0;
+  bool _isVisible = true;
 
   @override
   void initState() {
     super.initState();
 
-    screens = [
-      const HomeScreen(),
+    _screens = [
+      HomeScreen(
+        onScrollUp: onScrollUp,
+      ),
       const ExploreScreen(),
       const ProfileScreen()
     ];
+  }
+
+  onScrollUp(bool visible) {
+    setState(() {
+      _isVisible = visible;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
-        index: screenIndex,
-        children: screens,
+        index: _screenIndex,
+        children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.black,
-        iconSize: 35,
-        currentIndex: screenIndex,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.panorama_horizontal_outlined), label: "Explore"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_box_outlined), label: "Account")
-        ],
-        onTap: (index) {
-          setState(() {
-            screenIndex = index;
-          });
-        },
+      bottomNavigationBar: AnimatedContainer(
+        height: _isVisible ? 70 : 0,
+        duration: const Duration(milliseconds: 500),
+        child: Wrap(
+          children: [
+            BottomNavigationBar(
+              unselectedItemColor: Colors.grey,
+              type: BottomNavigationBarType.fixed,
+              fixedColor: Colors.black,
+              iconSize: 35,
+              currentIndex: _screenIndex,
+              items: const [
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.home_outlined), label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.panorama_horizontal_outlined),
+                    label: "Explore"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.account_box_outlined), label: "Account")
+              ],
+              onTap: (index) {
+                setState(() {
+                  _screenIndex = index;
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
