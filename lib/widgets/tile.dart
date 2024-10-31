@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class Tile extends StatelessWidget {
   final int index;
@@ -12,19 +15,9 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = context.read<ThemeProvider>().isDarkMode;
     return Container(
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(12), boxShadow: [
-          //bottom right
-          BoxShadow(
-              color: Colors.grey.shade800,
-              offset: const Offset(4, 4),
-              // spreadRadius: 3,
-              blurRadius: 3),
-          // top left
-          const BoxShadow(
-              color: Colors.white, offset: Offset(-4, -4), blurRadius: 3)
-        ]),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
         height: height,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),

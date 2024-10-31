@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:panels_app/screens/explore_screen.dart';
 import 'package:panels_app/screens/home_screen.dart';
-import 'package:panels_app/screens/profile_screen.dart';
+import 'package:panels_app/screens/account_screen.dart';
 
 class HolderScreen extends StatefulWidget {
   const HolderScreen({super.key});
@@ -23,8 +24,12 @@ class _HolderScreenState extends State<HolderScreen> {
       HomeScreen(
         onScrollUp: onScrollUp,
       ),
-      const ExploreScreen(),
-      const ProfileScreen()
+      ExploreScreen(
+        onScrollUp: onScrollUp,
+      ),
+      AccountScreen(
+        onScrollUp: onScrollUp,
+      )
     ];
   }
 
@@ -37,29 +42,32 @@ class _HolderScreenState extends State<HolderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: IndexedStack(
         index: _screenIndex,
         children: _screens,
       ),
       bottomNavigationBar: AnimatedContainer(
+        // animate the height when scrolling
         height: _isVisible ? 70 : 0,
         duration: const Duration(milliseconds: 500),
         child: Wrap(
           children: [
             BottomNavigationBar(
+              elevation: 0,
               unselectedItemColor: Colors.grey,
               type: BottomNavigationBarType.fixed,
-              fixedColor: Colors.black,
+              selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
               iconSize: 35,
               currentIndex: _screenIndex,
               items: const [
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home_outlined), label: "Home"),
+                    icon: Icon(CupertinoIcons.home), label: "For You"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.panorama_horizontal_outlined),
-                    label: "Explore"),
+                    icon: Icon(CupertinoIcons.pano), label: "Explore"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.account_box_outlined), label: "Account")
+                    icon: Icon(CupertinoIcons.person_crop_circle),
+                    label: "Account")
               ],
               onTap: (index) {
                 setState(() {
